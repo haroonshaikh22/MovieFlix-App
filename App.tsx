@@ -22,27 +22,31 @@ const App = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="bottomTab" component={BottomTab} />
           <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="BottomTab" component={BottomTab} />
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
-
-    // <NavigationContainer>
-    //   <Stack.Navigator screenOptions={{headerShown: false}}>
-    //     <Stack.Screen name="LoginIn" component={LoginIn} />
-    //     <Stack.Screen name="Register" component={Register} />
-    //     <Stack.Screen name="Home" component={Home} />
-    //   </Stack.Navigator>
-    // </NavigationContainer>
   );
 };
 
 export default App;
 
 const styles = StyleSheet.create({});
+
+// <NavigationContainer>
+//   <Stack.Navigator screenOptions={{headerShown: false}}>
+//     <Stack.Screen name="LoginIn" component={LoginIn} />
+//     <Stack.Screen name="Register" component={Register} />
+//     <Stack.Screen name="Home" component={Home} />
+//   </Stack.Navigator>
+// </NavigationContainer>

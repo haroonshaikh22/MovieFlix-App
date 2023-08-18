@@ -49,7 +49,8 @@ const Login = (props: any) => {
   console.log(LoginUserApi, 'api---');
 
   const LoginHandler = () => {
-    dispatch(LoginUser(token));
+    props.navigation.navigate('Home');
+    // dispatch(LoginUser(token));
   };
   return (
     <View style={{justifyContent: 'center', alignItems: 'center'}}>

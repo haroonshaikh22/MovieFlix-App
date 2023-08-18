@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import {
   ActivityIndicator,
+  RefreshControl,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -19,7 +20,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {FetchTrending} from '../redux/api/fetchTrending';
 const Home = () => {
   const dispatch = useDispatch();
-  const FetchTredingList = useSelector(state => state);
+  const FetchTredingList = useSelector(state => state.Trendings);
   const [trendData, setTrendData] = useState([1, 2, 3]);
   const [watchList, setWatchList] = useState([1, 2, 3, 4]);
   const [favorite, setFavrite] = useState([1, 2, 3, 4]);
@@ -28,6 +29,7 @@ const Home = () => {
   console.log(FetchTredingList, 'list');
 
   const CallAPi = () => {
+    setLoading(true);
     dispatch(FetchTrending());
   };
 
@@ -35,8 +37,15 @@ const Home = () => {
     CallAPi();
   }, []);
 
+  console.log(FetchTredingList, 'kkkk');
+
   useEffect(() => {
-    setTrendData(FetchTredingList?.data?.results);
+    if (FetchTredingList?.isLoaded && !FetchTredingList?.error) {
+      setLoading(false);
+      setTrendData(FetchTredingList?.data?.results);
+    } else {
+      console.log('Treanding api failed', FetchTredingList?.error_message);
+    }
   }, [FetchTredingList]);
 
   return (

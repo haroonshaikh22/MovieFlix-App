@@ -4,6 +4,7 @@
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Profile from '../Screen/Profile';
+import Home from '../Screen/Home';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -12,10 +13,13 @@ function BottomTab() {
     <Tab.Navigator
       initialRouteName="Home"
       activeColor="#e91e63"
+      screenOptions={{
+        tabBarStyle: {position: 'absolute'},
+      }}
       barStyle={{backgroundColor: 'tomato'}}>
       <Tab.Screen
         name="Home"
-        component={Feed}
+        component={Home}
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({color}) => (
