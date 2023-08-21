@@ -1,9 +1,8 @@
-import {UserRegister} from '../api/UserRegisterApi';
-
 const {createSlice} = require('@reduxjs/toolkit');
+const {FetchFavoriteList} = require('../api/FetchFavoriteList');
 
-const UserRegisterSlice = createSlice({
-  name: 'UserRegister',
+const FavoriteSlice = createSlice({
+  name: 'FavoriteList',
   initialState: {
     data: null,
     error: false,
@@ -12,12 +11,12 @@ const UserRegisterSlice = createSlice({
   },
 
   extraReducers: builder => {
-    builder.addCase(UserRegister.fulfilled, (state, action) => {
+    builder.addCase(FetchFavoriteList.fulfilled, (state, action) => {
       state.isLoaded = true;
-      state.success = true;
       state.data = action.payload;
+      state.success = true;
     });
-    builder.addCase(UserRegister.rejected, (state, action) => {
+    builder.addCase(FetchFavoriteList.rejected, (state, action) => {
       state.isLoaded = true;
       state.success = false;
       state.error = true;
@@ -26,4 +25,4 @@ const UserRegisterSlice = createSlice({
   },
 });
 
-export default UserRegisterSlice.reducer;
+export default FavoriteSlice.reducer;

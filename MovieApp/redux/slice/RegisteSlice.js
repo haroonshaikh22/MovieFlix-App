@@ -15,9 +15,11 @@ const RegisterSlice = createSlice({
     builder.addCase(GetToken.fulfilled, (state, action) => {
       state.isLoaded = true;
       state.data = action.payload;
+      state.success = true;
     });
     builder.addCase(GetToken.rejected, (state, action) => {
       state.isLoaded = true;
+      state.success = false;
       state.error = true;
       state.error_message = action.error;
     });

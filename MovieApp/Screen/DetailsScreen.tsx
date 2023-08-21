@@ -6,6 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -13,22 +14,96 @@ import React, {useEffect, useState} from 'react';
 import {useRoute} from '@react-navigation/native';
 import BackIcon from 'react-native-vector-icons/MaterialIcons';
 import HeartIcon from 'react-native-vector-icons/AntDesign';
+import StarIcon from 'react-native-vector-icons/FontAwesome';
 import LinearGradient from 'react-native-linear-gradient';
-import CastView from '../components/CastView';
+// import CastView from '../components/CastView';
+import {ImagePath} from '../API/MovieApi';
+import {useDispatch, useSelector} from 'react-redux';
+import {AddWatchList} from '../redux/api/AddwatchListApi';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {AddFavorite} from '../redux/api/AddFavorite';
 
 const {width, height} = Dimensions.get('window');
-const DetailsScreen = () => {
+const DetailsScreen = ({navigation}) => {
+  const dispatch = useDispatch();
+  const AddWatchApi = useSelector(state => state.AddWatchLists);
+  const AddFavoriteApi = useSelector(state => state.AddFavorite);
   const {params: item} = useRoute();
   const [isfavorite, setIsFavorite] = useState(false);
+  const [isWatched, setIsWatched] = useState(false);
   const [castData, setCastdata] = useState([1, 2, 3, 4]);
 
-  console.log('item', item);
+  //
+  const [movieId, setMovieId] = useState('');
+  const [sessionId, setSessionId] = useState('');
 
   useEffect(() => {
-    //Call api
-  }, [item]);
+    setMovieId(item?.id);
+  }, []);
+
+  //Add watch list api
+  // useEffect(() => {
+  //   if (AddWatchApi?.isLoaded && AddWatchApi?.success) {
+  //     console.log('success', AddWatchApi);
+  //     setIsFavorite(true);
+  //     ToastAndroid.show('Movie Added to Watch list', ToastAndroid.SHORT);
+  //   } else if (AddWatchApi?.isLoaded && !AddWatchApi?.success) {
+  //     console.log('failed', AddWatchApi);
+  //   }
+  // }, [AddWatchApi]);
+
+  //Add Fav list
+  useEffect(() => {
+    if (AddFavoriteApi?.isLoaded && AddFavoriteApi?.success) {
+      console.log('success', AddFavoriteApi);
+      setIsFavorite(true);
+      ToastAndroid.show('Movie Added to Favorite list', ToastAndroid.SHORT);
+    } else if (AddFavoriteApi?.isLoaded && !AddFavoriteApi?.success) {
+      console.log('failed', AddFavoriteApi);
+    }
+  }, [AddFavoriteApi]);
+
+  const AddWatchHandler = () => {
+    setIsWatched(true);
+    // dispatch(AddWatchList(sessionId, movieId));
+  };
+
+  const AddFavoriteHandler = () => {
+    console.log('prwes');
+
+    dispatch(AddFavorite(sessionId, movieId));
+  };
+
+  useEffect(() => {
+    getSession();
+  }, []);
+
+  const getSession = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('session_id');
+      const Data = jsonValue != null ? JSON.parse(jsonValue) : null;
+      console.log(Data, 'seeei');
+
+      setSessionId(Data?.sessionId);
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+      // error reading value
+      console.log('failed get data');
+    }
+  };
+
+  console.log(movieId, sessionId, 'dtetjjp');
+
+  const BackHandler = () => {
+    navigation?.goBack();
+  };
   return (
-    <ScrollView contentContainerStyle={{paddingBottom: 20}}>
+    <ScrollView
+      contentContainerStyle={{
+        paddingBottom: 20,
+        backgroundColor: '#18191A',
+        flexGrow: 1,
+      }}>
       <View
         style={{
           flexDirection: 'row',
@@ -40,30 +115,47 @@ const DetailsScreen = () => {
           width: '100%',
         }}>
         <TouchableOpacity
+          onPress={BackHandler}
           style={{
-            width: '8%',
+            width: '12%',
             margin: 10,
-            backgroundColor: 'yellow',
+            backgroundColor: '#FFFFFF',
             justifyContent: 'center',
             alignItems: 'center',
             marginLeft: 20,
+            borderRadius: 8,
+            height: 40,
           }}>
           <BackIcon name="arrow-back-ios" size={24} />
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setIsFavorite(!isfavorite)}
-          style={{width: '15%', margin: 10}}>
-          <HeartIcon
-            name={'heart'}
-            size={24}
-            color={isfavorite ? 'red' : 'white'}
-          />
-        </TouchableOpacity>
+
+        <View style={{width: '18%'}}>
+          <TouchableOpacity
+            onPress={() => AddWatchHandler()}
+            style={{margin: 10}}>
+            <HeartIcon
+              name={'heart'}
+              size={40}
+              color={isfavorite ? 'red' : 'white'}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => AddFavoriteHandler()}
+            style={{margin: 10}}>
+            <StarIcon
+              name={'star'}
+              size={42}
+              color={isWatched ? '#FFC60A' : 'white'}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
       <View>
         <Image
-          source={require('../components/moviePoster1.png')}
-          style={{width, height: height * 0.55}}
+          source={{uri: ImagePath(item?.poster_path)}}
+          style={{width, height: height * 0.66}}
+          resizeMode="cover"
         />
 
         <LinearGradient
@@ -89,22 +181,58 @@ const DetailsScreen = () => {
           alignItems: 'center',
           marginTop: -(height * 0.05),
         }}>
-        <Text style={{fontSize: 24, fontWeight: '700', color: '#FFFFFF'}}>
-          {'ANt Man hsghjh'}
+        <Text
+          style={{
+            fontSize: 26,
+            fontWeight: '800',
+            color: '#FFFFFF',
+            marginVertical: '2%',
+          }}>
+          {item?.original_title}
         </Text>
-        <Text style={{fontSize: 24, fontWeight: '700', color: '#FFFFFF'}}>
-          {'ANt Man hsghjh'}
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: '65%',
+            marginVertical: '2%',
+          }}>
+          <Text style={{fontSize: 12, fontWeight: '600', color: '#FFFFFF'}}>
+            {'Release Date '} {item?.release_date}
+          </Text>
+          <Text style={{fontSize: 12, fontWeight: '600', color: '#FFFFF2'}}>
+            {'Popularity  '}
+            {item?.popularity}
+          </Text>
+        </View>
+
+        <Text
+          style={{
+            fontSize: 12,
+            fontWeight: '600',
+            color: '#FFFFFF',
+          }}>
+          {'Rating  '} {item?.vote_average}
         </Text>
-        <Text style={{fontSize: 24, fontWeight: '700', color: '#FFFFFF'}}>
-          {'ANt Man hsghjh'}
-        </Text>
-        <Text style={{fontSize: 24, fontWeight: '700', color: '#FFFFFF'}}>
-          {'ANt Man hsghjh'}
+
+        <Text
+          style={{
+            fontSize: 12,
+            fontWeight: '600',
+            color: '#FFFFFF',
+            marginTop: 15,
+            textAlign: 'center',
+            width: '80%',
+            lineHeight: 14,
+          }}>
+          {'OverView'}
+          {'\n'}
+          {item?.overview}
         </Text>
       </View>
 
       {/* cast List */}
-      <CastView cast={castData} />
+      {/* <CastView cast={castData} /> */}
     </ScrollView>
   );
 };

@@ -1,9 +1,8 @@
-import {UserRegister} from '../api/UserRegisterApi';
-
 const {createSlice} = require('@reduxjs/toolkit');
+const {FetchWatchLists} = require('../api/WatchListApi');
 
-const UserRegisterSlice = createSlice({
-  name: 'UserRegister',
+const WatchListsSlice = createSlice({
+  name: 'WatchLists',
   initialState: {
     data: null,
     error: false,
@@ -12,18 +11,18 @@ const UserRegisterSlice = createSlice({
   },
 
   extraReducers: builder => {
-    builder.addCase(UserRegister.fulfilled, (state, action) => {
+    builder.addCase(FetchWatchLists.fulfilled, (state, action) => {
       state.isLoaded = true;
-      state.success = true;
       state.data = action.payload;
+      state.success = true;
     });
-    builder.addCase(UserRegister.rejected, (state, action) => {
+    builder.addCase(FetchWatchLists.rejected, (state, action) => {
       state.isLoaded = true;
-      state.success = false;
       state.error = true;
       state.error_message = action.error;
+      state.success = false;
     });
   },
 });
 
-export default UserRegisterSlice.reducer;
+export default WatchListsSlice.reducer;

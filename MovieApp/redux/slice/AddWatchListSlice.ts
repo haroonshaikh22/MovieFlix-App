@@ -1,9 +1,9 @@
-import {UserRegister} from '../api/UserRegisterApi';
+const {AddWatchList} = require('../api/AddwatchListApi');
 
 const {createSlice} = require('@reduxjs/toolkit');
 
-const UserRegisterSlice = createSlice({
-  name: 'UserRegister',
+const AddWatchListSlice = createSlice({
+  name: 'AddWatchList',
   initialState: {
     data: null,
     error: false,
@@ -12,12 +12,12 @@ const UserRegisterSlice = createSlice({
   },
 
   extraReducers: builder => {
-    builder.addCase(UserRegister.fulfilled, (state, action) => {
+    builder.addCase(AddWatchList.fulfilled, (state, action) => {
       state.isLoaded = true;
-      state.success = true;
       state.data = action.payload;
+      state.success = true;
     });
-    builder.addCase(UserRegister.rejected, (state, action) => {
+    builder.addCase(AddWatchList.rejected, (state, action) => {
       state.isLoaded = true;
       state.success = false;
       state.error = true;
@@ -26,4 +26,4 @@ const UserRegisterSlice = createSlice({
   },
 });
 
-export default UserRegisterSlice.reducer;
+export default AddWatchListSlice.reducer;

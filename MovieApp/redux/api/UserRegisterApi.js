@@ -10,7 +10,7 @@ export const UserRegister = createAsyncThunk('UserRegister', async params => {
     method: 'post',
     url: UserRegisterUrl,
     // params: `request_token: ${params}`,
-    data: {request_token: '9f565705fd4c546a4d5e4ea1dfc94db4d60b35da'},
+    data: {request_token: params},
   };
 
   console.log(options, 'oooo');

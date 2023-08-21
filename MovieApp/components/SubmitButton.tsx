@@ -6,11 +6,11 @@ const SubmitButton = (props: any) => {
   return (
     <TouchableOpacity
       style={{
-        width: '50%',
+        width: '90%',
         backgroundColor: Colors?.primary,
-        height: 40,
+        height: 42,
         borderRadius: 20,
-        marginTop: '5%',
+        marginTop: '10%',
         justifyContent: 'center',
         alignItems: 'center',
       }}

@@ -2,20 +2,21 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 import {API_KEY, BaseUrl} from '../../config/const';
 
-const LoginUrl = `${BaseUrl}/authentication/session/new?api_key=${API_KEY}`;
+const LoginUrl = `${BaseUrl}3/authentication/session/new?api_key=${API_KEY}`;
 
 export const LoginUser = createAsyncThunk('Login User', async params => {
   const options = {
-    method: 'post',
+    method: 'POST',
     url: LoginUrl,
-    data: {request_token: '3790a5c06e2887147582601c2f2e0341f4451816'},
+    body: {request_token: 'd281da7febf6f46b7fe345ad512a0f6dc72035ff'},
   };
 
   try {
     const response = await axios.request(options);
+    console.log(response, 'resppmm');
     return response.data;
   } catch (error) {
-    console.log(error);
+    console.log(error, 'error');
     return {};
   }
 });

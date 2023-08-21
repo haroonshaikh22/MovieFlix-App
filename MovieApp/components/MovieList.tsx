@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   Dimensions,
   Image,
@@ -8,10 +9,16 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
+import {ImagePath} from '../API/MovieApi';
+import {useNavigation} from '@react-navigation/native';
 let MovieName = 'Ant man';
 
 let {width, height} = Dimensions.get('window');
 const MovieList = ({title, data}) => {
+  console.log(data, 'data');
+
+  const Navigation = useNavigation();
+
   return (
     <View style={{}}>
       <View
@@ -19,11 +26,12 @@ const MovieList = ({title, data}) => {
           justifyContent: 'space-between',
           flexDirection: 'row',
           paddingHorizontal: 10,
-          marginBottom: 20,
+          marginVertical: '3%',
+          backgroundColor: 'pink',
         }}>
-        <Text>{title}</Text>
+        <Text style={{fontSize: 16, fontWeight: '700'}}>{title}</Text>
         <TouchableOpacity>
-          <Text>See all</Text>
+          <Text style={{fontSize: 16, fontWeight: '700'}}>See all</Text>
         </TouchableOpacity>
       </View>
 
@@ -32,20 +40,25 @@ const MovieList = ({title, data}) => {
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{paddingHorizontal: 15}}>
-        {data?.map(() => {
+        {data?.map(item => {
+          console.log(item, 'item--');
+
           return (
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => Navigation?.navigate('DetailsScreen', item)}>
               <View style={{justifyContent: 'center', alignItems: 'center'}}>
                 <Image
-                  source={require('./moviePoster1.png')}
+                  source={{uri: ImagePath(item?.poster_path)}}
                   style={{
                     width: width * 0.33,
                     height: height * 0.22,
                     borderRadius: 10,
-                    marginHorizontal: 3,
+                    marginHorizontal: 5,
                   }}
                 />
-                <Text>{MovieName}</Text>
+                <Text style={{fontSize: 14, fontWeight: '500'}}>
+                  {item?.original_title}
+                </Text>
               </View>
             </TouchableOpacity>
           );

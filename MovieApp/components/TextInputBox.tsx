@@ -12,6 +12,8 @@ const TextInputBox = (props: any) => {
   return (
     <View style={[styles.inputBox]}>
       <TextInput
+        onFocus={props.onFocus}
+        maxLength={props.maxLength}
         secureTextEntry={props.secureTextEntry}
         keyboardType={props.keyboardType ? props.keyboardType : 'default'}
         placeholderTextColor={'#000000'}

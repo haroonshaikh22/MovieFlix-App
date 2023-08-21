@@ -16,17 +16,26 @@ const {width, height} = Dimensions.get('window');
 const TrendingList = (props: any) => {
   // console.log(props?.data, 'prooo');
   const navigation = useNavigation();
-  const handleClick = ({item}) => {
+
+  const GotoDetailScreen = item => {
     navigation.navigate('DetailsScreen', item);
   };
 
   return (
-    <View style={{borderWidth: 1}}>
-      <Text>TrendingList</Text>
+    <View style={{}}>
+      <Text
+        style={{
+          fontSize: 22,
+          fontWeight: '800',
+          marginVertical: '2%',
+          marginLeft: '5%',
+        }}>
+        TrendingList
+      </Text>
       <Carousel
         data={props?.data}
         renderItem={({item}) => (
-          <MovieCard item={item} handleClick={() => handleClick(item)} />
+          <MovieCard item={item} gotoHandler={data => GotoDetailScreen(data)} />
         )}
         firstItem={1}
         // loop={true}
@@ -39,15 +48,17 @@ const TrendingList = (props: any) => {
   );
 };
 
-const MovieCard = ({item, handleClick}) => {
+const MovieCard = ({item, gotoHandler}) => {
+  // console.log(item, 'item');
+
   return (
-    <TouchableWithoutFeedback onPress={handleClick}>
+    <TouchableWithoutFeedback onPress={() => gotoHandler(item)}>
       <Image
         source={{uri: ImagePath(item?.poster_path)}}
         style={{
           width: width * 0.6,
           height: height * 0.4,
-          borderRadius: 10,
+          borderRadius: 40,
         }}
       />
     </TouchableWithoutFeedback>
