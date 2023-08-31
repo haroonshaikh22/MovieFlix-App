@@ -29,6 +29,7 @@ const DetailsScreen = ({navigation}) => {
   const AddWatchApi = useSelector(state => state.AddWatchLists);
   const AddFavoriteApi = useSelector(state => state.AddFavorite);
   const {params: item} = useRoute();
+
   const [isfavorite, setIsFavorite] = useState(false);
   const [isWatched, setIsWatched] = useState(false);
   const [castData, setCastdata] = useState([1, 2, 3, 4]);
@@ -41,16 +42,16 @@ const DetailsScreen = ({navigation}) => {
     setMovieId(item?.id);
   }, []);
 
-  //Add watch list api
-  // useEffect(() => {
-  //   if (AddWatchApi?.isLoaded && AddWatchApi?.success) {
-  //     console.log('success', AddWatchApi);
-  //     setIsFavorite(true);
-  //     ToastAndroid.show('Movie Added to Watch list', ToastAndroid.SHORT);
-  //   } else if (AddWatchApi?.isLoaded && !AddWatchApi?.success) {
-  //     console.log('failed', AddWatchApi);
-  //   }
-  // }, [AddWatchApi]);
+  // Add watch list api
+  useEffect(() => {
+    if (AddWatchApi?.isLoaded && AddWatchApi?.success) {
+      console.log('success', AddWatchApi);
+      setIsFavorite(true);
+      ToastAndroid.show('Movie Added to Watch list', ToastAndroid.SHORT);
+    } else if (AddWatchApi?.isLoaded && !AddWatchApi?.success) {
+      console.log('failed', AddWatchApi);
+    }
+  }, [AddWatchApi]);
 
   //Add Fav list
   useEffect(() => {
@@ -65,13 +66,15 @@ const DetailsScreen = ({navigation}) => {
 
   const AddWatchHandler = () => {
     setIsWatched(true);
-    // dispatch(AddWatchList(sessionId, movieId));
+    console.log('watch press');
+
+    dispatch(AddWatchList({sessionId: sessionId, movieId: movieId}));
   };
 
   const AddFavoriteHandler = () => {
     console.log('prwes');
 
-    dispatch(AddFavorite(sessionId, movieId));
+    dispatch(AddFavorite({sessionId: sessionId, movieId: movieId}));
   };
 
   useEffect(() => {
@@ -131,7 +134,7 @@ const DetailsScreen = ({navigation}) => {
 
         <View style={{width: '18%'}}>
           <TouchableOpacity
-            onPress={() => AddWatchHandler()}
+            onPress={() => AddFavoriteHandler()}
             style={{margin: 10}}>
             <HeartIcon
               name={'heart'}
@@ -141,7 +144,7 @@ const DetailsScreen = ({navigation}) => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => AddFavoriteHandler()}
+            onPress={() => AddWatchHandler()}
             style={{margin: 10}}>
             <StarIcon
               name={'star'}

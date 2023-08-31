@@ -57,8 +57,11 @@ const Home = (props: any) => {
   useEffect(() => {
     if (FetchTredingList?.isLoaded && !FetchTredingList?.error) {
       setLoading(false);
+      setRefreshing(false);
       setTrendData(FetchTredingList?.data?.results);
     } else {
+      setRefreshing(false);
+      setLoading(false);
       console.log('Treanding api failed', FetchTredingList?.error_message);
     }
   }, [FetchTredingList]);
@@ -68,8 +71,12 @@ const Home = (props: any) => {
     if (FetchWatchListApi?.isLoaded && FetchWatchListApi?.success) {
       // console.log('success', FetchWatchListApi?.data?.results);
       setWatchList(FetchWatchListApi?.data?.results);
+      setRefreshing(false);
+      setLoading(false);
     } else if (FetchWatchListApi?.isLoaded && !FetchWatchListApi?.success) {
       console.log('falied', FetchWatchListApi);
+      setRefreshing(false);
+      setLoading(false);
     }
   }, [FetchWatchListApi]);
 
@@ -82,11 +89,15 @@ const Home = (props: any) => {
     if (FetchFavoriteListApi?.isLoaded && FetchFavoriteListApi?.success) {
       console.log('success fav', FetchFavoriteListApi?.data?.results);
       setFavrite(FetchFavoriteListApi?.data?.results);
+      setRefreshing(false);
+      setLoading(false);
     } else if (
       FetchFavoriteListApi?.isLoaded &&
       !FetchFavoriteListApi?.success
     ) {
       console.log('falied', FetchFavoriteListApi);
+      setRefreshing(false);
+      setLoading(false);
     }
   }, [FetchFavoriteListApi]);
 
@@ -96,6 +107,9 @@ const Home = (props: any) => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    dispatch(FetchTrending());
+    dispatch(FetchWatchLists(data?.sessionId));
+    dispatch(FetchFavoriteList(data?.sessionId));
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);

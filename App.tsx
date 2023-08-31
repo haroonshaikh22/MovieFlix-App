@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import Home from './MovieApp/Screen/Home';
 import Login from './MovieApp/Screen/Login';
 import Register from './MovieApp/Screen/Register';
@@ -11,6 +11,7 @@ import DetailsScreen from './MovieApp/Screen/DetailsScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Provider} from 'react-redux';
 import {store} from './store';
+import LoadingScreen from './MovieApp/components/LoadingScreen';
 // import LoginIn from './TestScreen/LoginIn';
 // import Register from './TestScreen/Register';
 // import Home from './TestScreen/Home';
@@ -18,14 +19,24 @@ import {store} from './store';
 
 const Stack = createNativeStackNavigator();
 
+const MyTheme = {
+  dark: true,
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#121212',
+  },
+};
+
 const App = () => {
   return (
     <Provider store={store}>
-      <NavigationContainer>
+      <NavigationContainer theme={MyTheme}>
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
           }}>
+          <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="bottomTab" component={BottomTab} />
           <Stack.Screen name="Home" component={Home} />

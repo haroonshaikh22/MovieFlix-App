@@ -19,7 +19,7 @@ export const UserRegister = createAsyncThunk('UserRegister', async params => {
     const response = await axios.request(options);
     return response.data;
   } catch (error) {
-    console.log(error, 'user');
+    console.log(error, 'userRegister');
     return {};
   }
 });
