@@ -8,18 +8,11 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import TextInputBox from '../components/TextInputBox';
-import {Colors} from '../constant';
+
 import SubmitButton from '../components/SubmitButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useDispatch, useSelector} from 'react-redux';
-import {LoginUser} from '../redux/api/LoginApi';
-import axios from 'axios';
-import {API_KEY} from '../config/const';
-import {UserRegister} from '../redux/api/UserRegisterApi';
-const Login = (props: any) => {
-  const dispatch = useDispatch();
-  const UserRegisterApi = useSelector(state => state?.UserRegister);
 
+const Login = (props: any) => {
   const [token, setToken] = useState('');
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -33,16 +26,15 @@ const Login = (props: any) => {
   console.log(getUserName, getPassword, token, 'users');
 
   useEffect(() => {
-    getSession();
     getData();
   }, []);
 
-  const storeData = async value => {
+  const isLogged = async value => {
     try {
       const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem('session_id', jsonValue);
+      await AsyncStorage.setItem('is_logged', jsonValue);
       console.log('stroage success');
-      props?.navigation.navigate('Home', {value});
+      props?.navigation.navigate('Home', {jsonValue});
     } catch (e) {
       // saving error
       console.log('stroage faild');
@@ -50,12 +42,16 @@ const Login = (props: any) => {
   };
 
   const getData = async () => {
+    console.log('press---jkk');
+
     try {
       const jsonValue = await AsyncStorage.getItem('user_data');
       const Data = jsonValue != null ? JSON.parse(jsonValue) : null;
+      console.log(Data, 'dara----');
+
       setGetUserName(Data?.userName);
       setGetPassword(Data?.password);
-      setToken(Data?.reqToken);
+      setSessionId(Data?.sessionId);
 
       return (
         jsonValue != null ? JSON.parse(jsonValue) : null,
@@ -66,44 +62,6 @@ const Login = (props: any) => {
       console.log('failed get data');
     }
   };
-  const getSession = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('session_id');
-      const Data = jsonValue != null ? JSON.parse(jsonValue) : null;
-      console.log(Data, 'seeei');
-      if (Data?.sessionId && Data?.sessionId !== '') {
-        setLoading(false);
-        props?.navigation?.navigate('Home', {Data});
-      } else {
-        setLoading(false);
-      }
-
-      return (
-        jsonValue != null ? JSON.parse(jsonValue) : null,
-        console.log(jsonValue, 'l')
-      );
-    } catch (e) {
-      // error reading value
-      console.log('failed get data');
-    }
-  };
-
-  useEffect(() => {
-    console.log(UserRegisterApi);
-    if (UserRegisterApi?.isLoaded && UserRegisterApi?.success) {
-      console.log('user success', UserRegisterApi);
-      const userdata = {
-        userName: userName,
-        sessionId: UserRegisterApi?.data?.session_id,
-      };
-
-      storeData(userdata);
-      console.log(userdata, 'data');
-    } else if (UserRegisterApi?.isLoaded && !UserRegisterApi?.success) {
-      console.log('failed user', UserRegisterApi);
-      props?.navigation.navigate('Register');
-    }
-  }, [UserRegisterApi]);
 
   const Validation = () => {
     let newError = {};
@@ -118,13 +76,15 @@ const Login = (props: any) => {
   };
 
   const handleSubmit = () => {
+    getData();
     if (Validation()) {
       console.log('login');
-      dispatch(UserRegister(token));
+      isLogged({getUserName, sessionId});
     } else {
       console.log('invaled');
     }
   };
+
   if (loading) {
     <View>
       <ActivityIndicator
@@ -141,7 +101,7 @@ const Login = (props: any) => {
             fontWeight: '800',
             marginTop: '35%',
             textAlign: 'center',
-            color: '#44226E',
+            color: '#FFFFFF',
           }}>
           {'Welcome to \nThe Movie View'}
         </Text>
@@ -185,7 +145,7 @@ const Login = (props: any) => {
           )}
         </View>
 
-        <SubmitButton title={'Login'} SubmitHandler={handleSubmit} />
+        <SubmitButton title={'Login'} SubmitHandler={getData} />
 
         <TouchableOpacity
           style={{
@@ -199,7 +159,7 @@ const Login = (props: any) => {
             style={{
               fontSize: 18,
               fontWeight: '700',
-              color: '#44226E',
+
               alignSelf: 'center',
             }}>
             Register?

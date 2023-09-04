@@ -20,7 +20,12 @@ const TextInputBox = (props: any) => {
         placeholder={props?.placeholder}
         value={props?.value}
         onChangeText={props?.onChangeText}
-        style={{width: '90%', color: '#000000'}}
+        placeholderTextColor={'#FFFFFF'}
+        style={{
+          width: '90%',
+          borderColor: '#FFFFFF',
+          color: '#FFFFFF',
+        }}
       />
       {props?.search && (
         <TouchableOpacity>
@@ -36,6 +41,7 @@ export default TextInputBox;
 const styles = StyleSheet.create({
   inputBox: {
     borderWidth: 1,
+    borderColor: '#FFFFFF',
     borderRadius: 10,
     height: 40,
     width: '100%',
@@ -43,5 +49,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#3A3F47',
   },
 });

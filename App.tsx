@@ -10,12 +10,8 @@ import DetailsScreen from './MovieApp/Screen/DetailsScreen';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Provider} from 'react-redux';
-import {store} from './store';
-import LoadingScreen from './MovieApp/components/LoadingScreen';
-// import LoginIn from './TestScreen/LoginIn';
-// import Register from './TestScreen/Register';
-// import Home from './TestScreen/Home';
-// import LoginIn from './TestScreen/LoginIn';
+import {store} from './MovieApp/redux/store';
+import LoadingScreen from './MovieApp/Screen/LoadingScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +21,7 @@ const MyTheme = {
   colors: {
     ...DefaultTheme.colors,
     primary: '#121212',
+    background: '#18181B',
   },
 };
 
@@ -53,11 +50,3 @@ const App = () => {
 export default App;
 
 const styles = StyleSheet.create({});
-
-// <NavigationContainer>
-//   <Stack.Navigator screenOptions={{headerShown: false}}>
-//     <Stack.Screen name="LoginIn" component={LoginIn} />
-//     <Stack.Screen name="Register" component={Register} />
-//     <Stack.Screen name="Home" component={Home} />
-//   </Stack.Navigator>
-// </NavigationContainer>

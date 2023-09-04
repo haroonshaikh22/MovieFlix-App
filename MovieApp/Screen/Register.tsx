@@ -13,14 +13,17 @@ import TextInputBox from '../components/TextInputBox';
 import SubmitButton from '../components/SubmitButton';
 import {useDispatch, useSelector} from 'react-redux';
 import {GetToken} from '../redux/api/RegisterApi';
+
 // import {UserRegister} from '../redux/api/UserRegisterApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {RequestTokenApi} from '../redux/api/new/RequestTokenApi';
+import {SessionIdApi} from '../redux/api/new/SessionIdApi';
 
 const Register = (props: any) => {
   const dispatch = useDispatch();
-  const RegisterApis = useSelector(state => state?.Register);
-
-  const [reqToken, setReqToken] = useState('');
+  // const RegisterApis = useSelector(state => state?.Register);
+  const RequestTokenCalled = useSelector(state => state?.RequestToken);
+  const SessionIdCalled = useSelector(state => state?.SessionId);
 
   // User Form
   const [userName, setUserName] = useState('');
@@ -29,7 +32,13 @@ const Register = (props: any) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [mobile, setMobile] = useState('');
   const [errors, setErrors] = useState({});
-  // const [sessionId, setSessionId] = useState('');
+
+  //RequestToken
+  const [requestCall, setRequestCall] = useState(false);
+  const [reqToken, setReqToken] = useState('');
+  //Session Id
+  const [sessionIdCall, setSessionIdCall] = useState(false);
+  const [sessionId, setSessionId] = useState('');
 
   const storeData = async value => {
     try {
@@ -47,44 +56,63 @@ const Register = (props: any) => {
     if (reqToken === '') {
       console.log('api token called');
 
-      dispatch(GetToken());
+      dispatch(RequestTokenApi());
+      setRequestCall(true);
     }
   };
 
-  //Request Token
+  // Request Token
   useEffect(() => {
-    console.log(RegisterApis);
-    if (RegisterApis?.isLoaded && RegisterApis?.success) {
-      console.log('success', RegisterApis);
+    console.log(RequestTokenApi, 'resr');
 
-      setReqToken(RegisterApis?.data?.request_token);
-    } else if (RegisterApis?.isLoaded && !RegisterApis?.success) {
-      console.log('failed', RegisterApis);
+    if (
+      RequestTokenCalled?.isLoaded &&
+      RequestTokenCalled?.success &&
+      requestCall
+    ) {
+      console.log('success', RequestTokenCalled);
+      setReqToken(RequestTokenCalled?.data?.request_token);
+      const Url = `https://www.themoviedb.org/authenticate/${RequestTokenCalled?.data?.request_token}?redirect_to`;
+      Linking.openURL(Url).catch(error => console.log(error));
+    } else if (RequestTokenCalled?.isLoaded && !RequestTokenCalled?.success) {
+      console.log('failed', RequestTokenCalled);
     }
-  }, [RegisterApis]);
+  }, [RequestTokenCalled]);
 
   //Submit User Data and Create Session_id
 
-  // useEffect(() => {
-  //   console.log(UserRegisterApi);
-  //   if (UserRegisterApi?.isLoaded && UserRegisterApi?.success) {
-  //     setSessionId(UserRegisterApi?.data?.session_id);
-  //     console.log('user success', UserRegisterApi);
-  //     const userdata = {
-  //       userName: userName,
-  //       password: password,
-  //       email: email,
-  //       mobile: mobile,
-  //       sessionId: UserRegisterApi?.data?.session_id,
-  //     };
+  useEffect(() => {
+    console.log(SessionIdCalled, 'session');
 
-  //     storeData(userdata);
-  //     console.log(userdata, 'data');
-  //     props?.navigation.navigate('Login');
-  //   } else if (UserRegisterApi?.isLoaded && !UserRegisterApi?.success) {
-  //     console.log('failed user', UserRegisterApi);
-  //   }
-  // }, [UserRegisterApi]);
+    if (
+      SessionIdCalled?.isLoaded &&
+      SessionIdCalled?.success &&
+      sessionIdCall
+    ) {
+      setSessionId(SessionIdCalled?.data?.session_id);
+      console.log('user success', SessionIdCalled);
+      const userdata = {
+        userName: userName,
+        password: password,
+        email: email,
+        mobile: mobile,
+        sessionId: SessionIdCalled?.data?.session_id,
+      };
+
+      storeData(userdata);
+      console.log(userdata, 'data');
+      setSessionIdCall(false);
+      props?.navigation.navigate('Login');
+      //
+    } else if (
+      SessionIdCalled?.isLoaded &&
+      !SessionIdCalled?.success &&
+      sessionIdCall
+    ) {
+      setSessionIdCall(false);
+      console.log('failed user', SessionIdCalled);
+    }
+  }, [SessionIdCalled]);
 
   useEffect(() => {
     GetRequestToken();
@@ -118,19 +146,10 @@ const Register = (props: any) => {
   //Submit User Data and Create Session_id
   const handleRegistration = () => {
     if (validateForm()) {
-      // Perform registration logic here
-      const userdata = {
-        userName: userName,
-        password: password,
-        email: email,
-        mobile: mobile,
-        reqToken: reqToken,
-      };
-      storeData(userdata);
-      console.log('valid');
-      const Url = `https://www.themoviedb.org/authenticate/${reqToken}?redirect_to`;
-      Linking.openURL(Url).catch(error => console.log(error));
-      props?.navigation?.navigate('Login');
+      console.log('ses called');
+
+      dispatch(SessionIdApi(reqToken));
+      setSessionIdCall(true);
     } else {
       console.log('inval');
     }
@@ -138,7 +157,7 @@ const Register = (props: any) => {
 
   console.log(errors, 'error');
 
-  console.log(reqToken, 'token');
+  console.log(reqToken, sessionId, 'token');
 
   const ErrorText = text => {
     console.log(Object.values(text.text), 'errt');
@@ -157,7 +176,13 @@ const Register = (props: any) => {
   };
   return (
     <View style={{justifyContent: 'center', alignItems: 'center'}}>
-      <Text style={{marginTop: '20%', fontWeight: '700', fontSize: 32}}>
+      <Text
+        style={{
+          marginTop: '20%',
+          fontWeight: '700',
+          fontSize: 32,
+          color: '#FFFFFF',
+        }}>
         Register
       </Text>
 
@@ -176,7 +201,7 @@ const Register = (props: any) => {
               marginLeft: '5%',
               color: 'orange',
             }}>
-            {errors.userName}
+            {errors?.userName}
           </Text>
         )}
 
@@ -186,7 +211,7 @@ const Register = (props: any) => {
           value={email}
           onChangeText={dat => setEmail(dat)}
         />
-        {errors.userName && <ErrorText text={errors} />}
+        {errors?.email && <ErrorText text={errors?.email} />}
         <TextInputBox
           secureTextEntry={true}
           keyboardType={'visible-password'}
@@ -194,13 +219,15 @@ const Register = (props: any) => {
           value={password}
           onChangeText={dat => setPassword(dat)}
         />
-        {errors.userName && <ErrorText text={errors} />}
+        {errors?.password && <ErrorText text={errors?.password} />}
         <TextInputBox
           placeholder={'Confirm Password'}
           value={confirmPassword}
           onChangeText={dat => setConfirmPassword(dat)}
         />
-        {errors.userName && <ErrorText text={errors} />}
+        {errors?.comfirmPassword && (
+          <ErrorText text={errors?.comfirmPassword} />
+        )}
         <TextInputBox
           maxLength={10}
           keyboardType={'phone-pad'}
@@ -208,7 +235,7 @@ const Register = (props: any) => {
           value={mobile}
           onChangeText={dat => setMobile(dat)}
         />
-        {errors.userName && <ErrorText text={errors} />}
+        {errors?.mobile && <ErrorText text={errors?.mobile} />}
       </View>
 
       <SubmitButton title={'Register'} SubmitHandler={handleRegistration} />

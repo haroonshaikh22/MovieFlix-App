@@ -7,12 +7,13 @@ const LoadingScreen = (props: any) => {
   useEffect(() => {
     getSession();
   }, []);
+
   const getSession = async () => {
     try {
-      const jsonValue = await AsyncStorage.getItem('session_id');
+      const jsonValue = await AsyncStorage.getItem('is_logged');
       const Data = jsonValue != null ? JSON.parse(jsonValue) : null;
       console.log(Data, 'seeei');
-      if (Data?.sessionId && Data?.sessionId !== '') {
+      if (Data !== '') {
         props?.navigation?.navigate('Home', {Data});
       } else {
         props?.navigation?.navigate('Login', {Data});
