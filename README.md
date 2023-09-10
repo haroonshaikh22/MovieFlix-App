@@ -1,4 +1,11 @@
-<img src="pic1.jpeg" width="100" height="100">
+# Login Screen Using check user from LocalDb and Auth
+<img src="pic1.jpeg" width="200" height="300">
+# Register Screen generate TMDB toker and navigate to TMDB website for approve user token
+<img src="pic2.jpeg" width="200" height="300">
+# Home Screen with Trending Movie list using Redux Axios for called and fetch Data
+<img src="pic3.jpeg" width="200" height="300">
+# Movie Details show full of selected movie user can add to watch list or Favorite list
+<img src="pic4.jpeg" width="200" height="300">
 
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
