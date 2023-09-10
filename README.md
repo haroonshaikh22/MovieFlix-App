@@ -1,3 +1,6 @@
+# Movie View App for Android and iOS showing movie list of trending movie new release and many more
+# App was create using React Native CLI , redux management, react navigation, AsycnStorage DB, TMDB API(open source)
+
 # Login Screen Using check user from LocalDb and Auth
 <img src="pic1.jpeg" width="200" height="300">
 # Register Screen generate TMDB toker and navigate to TMDB website for approve user token
