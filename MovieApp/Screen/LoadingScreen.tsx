@@ -12,7 +12,7 @@ const LoadingScreen = (props: any) => {
     try {
       const jsonValue = await AsyncStorage.getItem('is_logged');
       const Data = jsonValue != null ? JSON.parse(jsonValue) : null;
-      console.log(Data, 'seeei');
+
       if (Data !== '') {
         props?.navigation?.navigate('Home', {Data});
       } else {

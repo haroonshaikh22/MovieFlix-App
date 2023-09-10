@@ -6,7 +6,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -30,20 +29,15 @@ const Home = (props: any) => {
   const [favorite, setFavrite] = useState([1, 2, 3, 4]);
   const [loading, setLoading] = useState(false);
   const [searchBox, setSearchBox] = useState(true);
-  const [sessionId, setSessionId] = useState('');
+
   const [refreshing, setRefreshing] = React.useState(false);
 
   const data = props?.route?.params?.Data;
-  console.log(data, 'para');
-
-  // setSessionId(data?.sessionId);
 
   const CallAPi = () => {
     setLoading(true);
     dispatch(FetchTrending());
   };
-
-  console.log(sessionId, 'session id');
 
   useEffect(() => {
     CallAPi();
@@ -51,8 +45,6 @@ const Home = (props: any) => {
     WatchListFunction();
     FavoriteListFunction();
   }, []);
-
-  // console.log(FetchTredingList, 'kkkk');
 
   useEffect(() => {
     if (FetchTredingList?.isLoaded && !FetchTredingList?.error) {
@@ -62,14 +54,12 @@ const Home = (props: any) => {
     } else {
       setRefreshing(false);
       setLoading(false);
-      console.log('Treanding api failed', FetchTredingList?.error_message);
     }
   }, [FetchTredingList]);
 
   //Watch List APi
   useEffect(() => {
     if (FetchWatchListApi?.isLoaded && FetchWatchListApi?.success) {
-      // console.log('success', FetchWatchListApi?.data?.results);
       setWatchList(FetchWatchListApi?.data?.results);
       setRefreshing(false);
       setLoading(false);
@@ -87,7 +77,6 @@ const Home = (props: any) => {
   //Favorite APi
   useEffect(() => {
     if (FetchFavoriteListApi?.isLoaded && FetchFavoriteListApi?.success) {
-      console.log('success fav', FetchFavoriteListApi?.data?.results);
       setFavrite(FetchFavoriteListApi?.data?.results);
       setRefreshing(false);
       setLoading(false);
@@ -95,7 +84,6 @@ const Home = (props: any) => {
       FetchFavoriteListApi?.isLoaded &&
       !FetchFavoriteListApi?.success
     ) {
-      console.log('falied', FetchFavoriteListApi);
       setRefreshing(false);
       setLoading(false);
     }
@@ -123,7 +111,7 @@ const Home = (props: any) => {
         alignItems: 'center',
         borderWidth: 1,
         alignSelf: 'center',
-        backgroundColor: '#FFFFFF',
+
         flex: 1,
       }}>
       <StatusBar barStyle={'light-content'} />
@@ -131,9 +119,6 @@ const Home = (props: any) => {
         style={{
           backgroundColor: Colors?.primary,
           width: '100%',
-          // borderTopLeftRadius: 15,
-          // borderTopRightRadius: 15,
-
           justifyContent: 'center',
           alignItems: 'flex-start',
           paddingVertical: '2%',
@@ -149,7 +134,7 @@ const Home = (props: any) => {
           {data?.userName}
         </Text>
       </View>
-      <Text style={{fontSize: 22, fontWeight: '700', color: '#090909'}}>
+      <Text style={{fontSize: 22, fontWeight: '700', color: '#FFFFFF'}}>
         <Text style={{color: '#44226E'}}>M</Text>ovies
       </Text>
 

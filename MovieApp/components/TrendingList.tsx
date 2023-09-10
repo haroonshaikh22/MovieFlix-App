@@ -14,7 +14,6 @@ import {ImagePath} from '../API/MovieApi';
 
 const {width, height} = Dimensions.get('window');
 const TrendingList = (props: any) => {
-  // console.log(props?.data, 'prooo');
   const navigation = useNavigation();
 
   const GotoDetailScreen = item => {
@@ -49,8 +48,6 @@ const TrendingList = (props: any) => {
 };
 
 const MovieCard = ({item, gotoHandler}) => {
-  // console.log(item, 'item');
-
   return (
     <TouchableWithoutFeedback onPress={() => gotoHandler(item)}>
       <Image

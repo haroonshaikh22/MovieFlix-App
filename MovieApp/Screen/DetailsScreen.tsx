@@ -45,7 +45,6 @@ const DetailsScreen = ({navigation}) => {
   // Add watch list api
   useEffect(() => {
     if (AddWatchApi?.isLoaded && AddWatchApi?.success) {
-      console.log('success', AddWatchApi);
       setIsFavorite(true);
       ToastAndroid.show('Movie Added to Watch list', ToastAndroid.SHORT);
     } else if (AddWatchApi?.isLoaded && !AddWatchApi?.success) {
@@ -56,7 +55,6 @@ const DetailsScreen = ({navigation}) => {
   //Add Fav list
   useEffect(() => {
     if (AddFavoriteApi?.isLoaded && AddFavoriteApi?.success) {
-      console.log('success', AddFavoriteApi);
       setIsFavorite(true);
       ToastAndroid.show('Movie Added to Favorite list', ToastAndroid.SHORT);
     } else if (AddFavoriteApi?.isLoaded && !AddFavoriteApi?.success) {
@@ -66,14 +64,11 @@ const DetailsScreen = ({navigation}) => {
 
   const AddWatchHandler = () => {
     setIsWatched(true);
-    console.log('watch press');
 
     dispatch(AddWatchList({sessionId: sessionId, movieId: movieId}));
   };
 
   const AddFavoriteHandler = () => {
-    console.log('prwes');
-
     dispatch(AddFavorite({sessionId: sessionId, movieId: movieId}));
   };
 
@@ -85,7 +80,6 @@ const DetailsScreen = ({navigation}) => {
     try {
       const jsonValue = await AsyncStorage.getItem('session_id');
       const Data = jsonValue != null ? JSON.parse(jsonValue) : null;
-      console.log(Data, 'seeei');
 
       setSessionId(Data?.sessionId);
       return jsonValue != null ? JSON.parse(jsonValue) : null;
@@ -94,8 +88,6 @@ const DetailsScreen = ({navigation}) => {
       console.log('failed get data');
     }
   };
-
-  console.log(movieId, sessionId, 'dtetjjp');
 
   const BackHandler = () => {
     navigation?.goBack();
@@ -226,9 +218,23 @@ const DetailsScreen = ({navigation}) => {
             marginTop: 15,
             textAlign: 'center',
             width: '80%',
-            lineHeight: 14,
+            lineHeight: 18,
+            letterSpacing: 0.5,
           }}>
-          {'OverView'}
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: '700',
+              color: '#FFFFFF',
+              textAlign: 'center',
+              width: '80%',
+              lineHeight: 18,
+              letterSpacing: 0.5,
+            }}>
+            {' '}
+            {'OverView'}
+          </Text>
+
           {'\n'}
           {item?.overview}
         </Text>

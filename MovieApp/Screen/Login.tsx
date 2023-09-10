@@ -23,8 +23,6 @@ const Login = (props: any) => {
   const [error, setError] = useState({});
   const [loading, setLoading] = useState(true);
 
-  console.log(getUserName, getPassword, token, 'users');
-
   useEffect(() => {
     getData();
   }, []);
@@ -42,12 +40,9 @@ const Login = (props: any) => {
   };
 
   const getData = async () => {
-    console.log('press---jkk');
-
     try {
       const jsonValue = await AsyncStorage.getItem('user_data');
       const Data = jsonValue != null ? JSON.parse(jsonValue) : null;
-      console.log(Data, 'dara----');
 
       setGetUserName(Data?.userName);
       setGetPassword(Data?.password);

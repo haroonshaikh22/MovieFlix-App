@@ -15,8 +15,6 @@ let MovieName = 'Ant man';
 
 let {width, height} = Dimensions.get('window');
 const MovieList = ({title, data}) => {
-  console.log(data, 'data');
-
   const Navigation = useNavigation();
 
   return (
@@ -25,13 +23,20 @@ const MovieList = ({title, data}) => {
         style={{
           justifyContent: 'space-between',
           flexDirection: 'row',
-          paddingHorizontal: 10,
+          paddingHorizontal: 15,
           marginVertical: '3%',
-          backgroundColor: 'pink',
+          backgroundColor: '#FFFFFF',
+          borderRadius: 10,
+          padding: 5,
+          marginTop: '10%',
         }}>
-        <Text style={{fontSize: 16, fontWeight: '700'}}>{title}</Text>
+        <Text style={{fontSize: 16, fontWeight: '700', color: '#44226E'}}>
+          {title}
+        </Text>
         <TouchableOpacity>
-          <Text style={{fontSize: 16, fontWeight: '700'}}>See all</Text>
+          <Text style={{fontSize: 16, fontWeight: '700', color: '#44226E'}}>
+            See all
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -41,8 +46,6 @@ const MovieList = ({title, data}) => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{paddingHorizontal: 15}}>
         {data?.map(item => {
-          console.log(item, 'item--');
-
           return (
             <TouchableOpacity
               onPress={() => Navigation?.navigate('DetailsScreen', item)}>

@@ -63,8 +63,6 @@ const Register = (props: any) => {
 
   // Request Token
   useEffect(() => {
-    console.log(RequestTokenApi, 'resr');
-
     if (
       RequestTokenCalled?.isLoaded &&
       RequestTokenCalled?.success &&
@@ -82,8 +80,6 @@ const Register = (props: any) => {
   //Submit User Data and Create Session_id
 
   useEffect(() => {
-    console.log(SessionIdCalled, 'session');
-
     if (
       SessionIdCalled?.isLoaded &&
       SessionIdCalled?.success &&
@@ -100,7 +96,7 @@ const Register = (props: any) => {
       };
 
       storeData(userdata);
-      console.log(userdata, 'data');
+
       setSessionIdCall(false);
       props?.navigation.navigate('Login');
       //
@@ -146,8 +142,6 @@ const Register = (props: any) => {
   //Submit User Data and Create Session_id
   const handleRegistration = () => {
     if (validateForm()) {
-      console.log('ses called');
-
       dispatch(SessionIdApi(reqToken));
       setSessionIdCall(true);
     } else {
@@ -155,13 +149,7 @@ const Register = (props: any) => {
     }
   };
 
-  console.log(errors, 'error');
-
-  console.log(reqToken, sessionId, 'token');
-
   const ErrorText = text => {
-    console.log(Object.values(text.text), 'errt');
-
     return (
       <Text
         style={{
