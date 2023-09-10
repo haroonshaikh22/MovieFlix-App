@@ -1,4 +1,4 @@
-![img[|200]](pic1.jpeg)
+<img src="pic1.jpeg" width="100" height="100">
 
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
